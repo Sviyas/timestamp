@@ -29,21 +29,21 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:date",(req,res)=> {
 
   // ? 
-  const dateString = req.params.date;
+  const date_string = req.params.date;
  let datefetch ;
 
-  if(!dateString) {
+  if(!date_string) {
     datefetch = new Date();
   } else {
-    if(!isNaN(dateString)) {
-      datefetch = new Date(parseInt(dateString));
+    if(!isNaN(date_string)) {
+      datefetch = new Date(parseInt(date_string));
     } else {
-      datefetch = new date(dateString)
+      datefetch = new date(date_string)
     }
   }
 
   // @ts-check
-  if(dateString.toString === 'Invalid Date') {
+  if(date_string.toString === 'Invalid Date') {
     res.json({ error : datefetch.toString()})
   } else {
     res.json({ unix : datefetch.getTime(), utc : datefetch.toUTCString()})
