@@ -20,40 +20,37 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+app.get("/api/:date", function (req, res) {
+  let dateObject;
+  if (/^\d{5,}$/.test(req.params.date)) {
+    dateObject = new Date(parseInt(req.params.date));
+  } else {
+    dateObject = new Date(req.params.date);
+    console.log("🚀 ~ file: index.js:29 ~ dateObject", dateObject)
+  }
+  if (dateObject.toString() != "Invalid Date") {
+    let dateJSON = {
+      "unix": dateObject.valueOf(),
+      "utc": dateObject.toUTCString()
+    };
+    console.log(req.params.date, dateObject, dateJSON);
+    res.json(dateJSON);
+  } else {
+    res.json({ "error": "Invalid Date"});
+  }
+});
+
+app.get("/api", (req, res) => {
+  const dateObject = new Date();
+  console.log("🚀 ~ file: index.js:44 ~ app.get ~ dateObject", dateObject)
+  res.json({
+    "unix": dateObject.valueOf(),
+    "utc": dateObject.toUTCString() 
+  });
 });
 
 
-// ? timestamp micro service
-app.get("/api/:date",(req,res)=> {
-
-  // ? 
-  const date_string = req.params.date;
- let datefetch ;
-
-  if(!date_string) {
-    datefetch = new Date();
-  } else {
-    if(!isNaN(date_string)) {
-      datefetch = new Date(parseInt(date_string));
-    } else {
-      datefetch = new date(date_string)
-    }
-  }
-
-  // @ts-check
-  if(date_string.toString === 'Invalid Date') {
-    res.json({ error : datefetch.toString()})
-  } else {
-    res.json({ unix : datefetch.getTime(), utc : datefetch.toUTCString()})
-  }
-})
-
-
-
-
 // listen for requests :)
-var listener = app.listen(4000, function () {
+var listener = app.listen(process.env.PORT, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
