@@ -19,52 +19,41 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-// your first API endpoint... 
-app.get("/api/date/:date", function(req, res) {
-  let dateObject;
-  if (/^\d{5,}$/.test(req.params.date)) {
-    dateObject = new Date(parseInt(req.params.date));
-    console.log('aaaaaaaaaa',dateObject);
+// ?  your first API endpoint... 
 
-  } else {
-    dateObject = new Date(req.params.date);
 
-    console.log('aaaaaaaaaa',dateObject);
-  }
-  if (dateObject.toString() != "Invalid Date") {
-    let dateJSON = {
-      "unix": dateObject.valueOf(),
-      "utc": dateObject.toUTCString()
-    };
-    console.log(req.params.date, dateObject, dateJSON);
-    res.json(dateJSON);
-  } else {
-    res.json({ "error": "Invalid Date" });
-  }
+app.get("/api/:date?", (req, res) => {
+ 
+let timestamp = req.params.date;
+console.log("🚀 ~ file: index.js:28 ~ app.get ~ timestamp", timestamp)
+
+
+if(timestamp.match(/\d{5,}/g)) {
+  timestamp =+ timestamp;
+}
+
+let date = new Date(timestamp);
+console.log("🚀 ~ file: index.js:36 ~ app.get ~ date", date)
+
+if(date.toUTCString() === "Invalid Date") {
+  res.json({ error : date.toUTCString()})
+}
+
+res.json({ unix : date.valueOf() , utc : date.toUTCString()})
 });
 
 
-app.get("/api",(req,res)=> {
+app.get("/api/timestamp/date", (req,res) => {
 
-  const dateObj=   new Date();
-
-  const UTC = dateObj.toUTCString();
-  const UNIX = dateObj.getTime();
-
-  res.json({
-    utc : UTC, unix : UNIX
-  })
+  let date = new Date();
+  let UTC = date.getTime();
+  UTC = new Date(UTC);
+  UTS = UTC.toUTCString();
+  let UNIX = date.getTime();
+  res.json({ unix: UNIX, utc: UTS });
 })
 
-// app.get("/api/:date", (req, res) => {
-//   const dateObject = new Date();
-//   console.log("🚀 ~ file: index.js:44 ~ app.get ~ dateObject", dateObject)
-//   res.json({
-//     "unix": dateObject.valueOf(),
-//     "utc": dateObject.toUTCString() 
-//   });
-// });
+
 
 
 // listen for requests :)
