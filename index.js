@@ -20,13 +20,17 @@ app.get("/", function (req, res) {
 
 
 // your first API endpoint... 
-app.get("/api/:date?", function (req, res) {
+// your first API endpoint... 
+app.get("/api/date/:date", function(req, res) {
   let dateObject;
   if (/^\d{5,}$/.test(req.params.date)) {
     dateObject = new Date(parseInt(req.params.date));
+    console.log('aaaaaaaaaa',dateObject);
+
   } else {
     dateObject = new Date(req.params.date);
-    console.log("🚀 ~ file: index.js:29 ~ dateObject", dateObject)
+
+    console.log('aaaaaaaaaa',dateObject);
   }
   if (dateObject.toString() != "Invalid Date") {
     let dateJSON = {
@@ -36,9 +40,22 @@ app.get("/api/:date?", function (req, res) {
     console.log(req.params.date, dateObject, dateJSON);
     res.json(dateJSON);
   } else {
-    res.json({ "error": "Invalid Date"});
+    res.json({ "error": "Invalid Date" });
   }
 });
+
+
+app.get("/api",(req,res)=> {
+
+  const dateObj=   new Date();
+
+  const UTC = dateObj.toUTCString();
+  const UNIX = dateObj.getTime();
+
+  res.json({
+    utc : UTC, unix : UNIX
+  })
+})
 
 // app.get("/api/:date", (req, res) => {
 //   const dateObject = new Date();
