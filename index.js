@@ -1,26 +1,22 @@
 // index.js
-// where your node app starts
 
-// init project
+
 var express = require('express');
 var app = express();
 
-// enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
-// so that your API is remotely testable by FCC 
 var cors = require('cors');
-app.use(cors({optionsSuccessStatus: 200}));  // some legacy browsers choke on 204
+app.use(cors({optionsSuccessStatus: 200}));  
 
-// http://expressjs.com/en/starter/static-files.html
+
 app.use(express.static('public'));
 
-// http://expressjs.com/en/starter/basic-routing.html
+
 app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
 
-// ?  your first API endpoint... 
-
+// ?  timestamp api 
 
 app.get("/api/:date?", (req, res) => {
  
@@ -43,6 +39,8 @@ return res.json({ unix : date.valueOf() , utc : date.toUTCString()})
 });
 
 
+
+// ? empty path 
 app.get("/api/timestamp/date", (req,res) => {
 
   console.log('request ',req.params);
@@ -52,13 +50,13 @@ app.get("/api/timestamp/date", (req,res) => {
   UTC = new Date(UTC);
   UTS = UTC.toUTCString();
   let UNIX = date.getTime();
-  res.json({ unix: UNIX, utc: UTS });
+ return  res.json({ unix: UNIX, utc: UTS });
 })
 
 
 
 
-// listen for requests :)
+// ? server listen port
 const port =  4000;
 var listener = app.listen(port, function () {
   console.log('Your app is listening on port ' + listener.address().port);
