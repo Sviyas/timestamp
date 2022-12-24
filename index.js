@@ -24,26 +24,28 @@ app.get("/", function (req, res) {
 
 app.get("/api/:date?", (req, res) => {
  
-let timestamp = req.params.date;
+let timestamp = req.params.date|| new Date().toUTCString();
 console.log("🚀 ~ file: index.js:28 ~ app.get ~ timestamp", timestamp)
 
 
 if(timestamp.match(/\d{5,}/g)) {
   timestamp =+ timestamp;
-}
+} 
 
 let date = new Date(timestamp);
 console.log("🚀 ~ file: index.js:36 ~ app.get ~ date", date)
 
 if(date.toUTCString() === "Invalid Date") {
-  res.json({ error : date.toUTCString()})
+  return res.json({ error : date.toUTCString()})
 }
 
-res.json({ unix : date.valueOf() , utc : date.toUTCString()})
+return res.json({ unix : date.valueOf() , utc : date.toUTCString()})
 });
 
 
 app.get("/api/timestamp/date", (req,res) => {
+
+  console.log('request ',req.params);
 
   let date = new Date();
   let UTC = date.getTime();
