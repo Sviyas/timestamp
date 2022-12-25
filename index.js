@@ -42,14 +42,12 @@ return res.json({ unix : date.valueOf() , utc : date.toUTCString()})
 
 // ? empty path 
 app.get("/api/timestamp/date", (req,res) => {
-
-  console.log('request ',req.params);
-
-  let date = new Date();
+  let date = new Date(); 
   let UTC = date.getTime();
   UTC = new Date(UTC);
-  UTS = UTC.toUTCString();
+  const UTS = UTC.toUTCString();
   let UNIX = date.getTime();
+  
  return  res.json({ unix: UNIX, utc: UTS });
 })
 
